@@ -1,0 +1,28 @@
+{
+  "name": "zk_battleship_subgraph",
+  "author": "Ian Brighton",
+  "license": "UNLICENSED",
+  "scripts": {
+    "script": "ts-node scripts",
+    "precodegen:rinkeby": "rimraf src/generated && yarn script template --network rinkeby",
+    "postcodegen": "yarn script flatten",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/zk_battleship_rinkeby",
+    "lint": "yarn prettier --write {src,scripts}/{*,**/*}.{ts,json,yaml}"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "0.20.1",
+    "@graphprotocol/graph-ts": "0.20.0",
+    "@types/glob": "^7.2.0",
+    "@types/yargs": "^17.0.8",
+    "handlebars": "^4.7.7",
+    "glob": "^7.2.0",
+    "path": "^0.12.7",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2",
+    "yargs": "^17.3.1"
+  }
+}

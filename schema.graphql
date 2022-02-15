@@ -1,0 +1,24 @@
+#################################################
+# Entities
+#################################################
+
+enum GameStatus {
+  STARTED
+  JOINED
+  OVER
+}
+
+type BattleshipGame @entity {
+  id: ID!
+  shots: [Shot]! @derivedFrom(field: "game")
+  status: GameStatus!
+  totalShots: BigInt!
+  winner: Bytes
+}
+
+type Shot @entity {
+  id: ID!
+  game: BattleshipGame!
+  hit: Boolean!
+  turn: BigInt!
+}

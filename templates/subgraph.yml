@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BattleshipGame
+    network: {{networkName}}
+    source: 
+      address: '{{battleshipGame}}'
+      abi: BattleshipGame
+      startBlock: {{startBlock}}
+    mapping: 
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - BattleshipGame
+      abis:
+        - name: BattleshipGame
+          file: ./abis/BattleshipGame.json
+      eventHandlers: 
+         - event: Started(uint256)
+           handler: handleGameStarted
+         - event: Joined(uint256)
+           handler: handleGameJoined
+         - event: Shot(uint256,uint256,bool)
+           handler: handleShot
+         - event: Won(address,uint256)
+           handler: handleGameWon
+         - event: Collected(uint256)
+           handler: handleRewardCollected
+      file: ./src/mappings/BattleshipGame.ts
