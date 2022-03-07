@@ -10,7 +10,6 @@ Contracts: https://github.com/jp4g/BattleZips
 
 ### Current supported networks
 
-* Rinkeby
 * Goerli
 * Mumbai
 * Polygon
