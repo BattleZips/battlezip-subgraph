@@ -19,14 +19,14 @@ dataSources:
         - name: BattleshipGame
           file: ./abis/BattleshipGame.json
       eventHandlers: 
-         - event: Started(uint256)
+         - event: Started(uint256,address)
            handler: handleGameStarted
-         - event: Joined(uint256)
+         - event: Joined(uint256,address)
            handler: handleGameJoined
-         - event: Shot(uint256,uint256,bool)
+         - event: Report(bool,uint256)
+           handler: handleReport
+         - event: Shot(uint8,uint8,uint256)
            handler: handleShot
-         - event: Won(address,uint256)
+         - event: Won(address,uint256,address)
            handler: handleGameWon
-         - event: Collected(uint256)
-           handler: handleRewardCollected
       file: ./src/mappings/BattleshipGame.ts

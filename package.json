@@ -4,11 +4,17 @@
   "license": "UNLICENSED",
   "scripts": {
     "script": "ts-node scripts",
+    "precodegen:goerli": "rimraf src/generated && yarn script template --network goerli",
+    "precodegen:mumbai": "rimraf src/generated && yarn script template --network mumbai",
+    "precodegen:polygon": "rimraf src/generated && yarn script template --network polygon",
     "precodegen:rinkeby": "rimraf src/generated && yarn script template --network rinkeby",
     "postcodegen": "yarn script flatten",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/zk_battleship_rinkeby",
+    "deploy:goerli": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_goerli",
+    "deploy:mumbai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_mumbai",
+    "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_polygon",
+    "deploy:rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/zk_battleship_rinkeby",
     "lint": "yarn prettier --write {src,scripts}/{*,**/*}.{ts,json,yaml}"
   },
   "devDependencies": {
