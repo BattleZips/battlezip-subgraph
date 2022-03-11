@@ -6,7 +6,6 @@ import {
   Value,
   ValueKind,
   store,
-  Address,
   Bytes,
   BigInt,
   BigDecimal
@@ -16,26 +15,31 @@ export class BattleshipGame extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+
+    this.set("startedBy", Value.fromBytes(Bytes.empty()));
+    this.set("status", Value.fromString(""));
+    this.set("totalShots", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save BattleshipGame entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save BattleshipGame entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("BattleshipGame", id.toString(), this);
+    assert(id != null, "Cannot save BattleshipGame entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type BattleshipGame must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("BattleshipGame", id.toString(), this);
+    }
   }
 
   static load(id: string): BattleshipGame | null {
-    return store.get("BattleshipGame", id) as BattleshipGame | null;
+    return changetype<BattleshipGame | null>(store.get("BattleshipGame", id));
   }
 
   get id(): string {
     let value = this.get("id");
-    return value.toString();
+    return value!.toString();
   }
 
   set id(value: string) {
@@ -44,7 +48,7 @@ export class BattleshipGame extends Entity {
 
   get joinedBy(): Bytes | null {
     let value = this.get("joinedBy");
-    if (value === null || value.kind == ValueKind.NULL) {
+    if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -52,25 +56,25 @@ export class BattleshipGame extends Entity {
   }
 
   set joinedBy(value: Bytes | null) {
-    if (value === null) {
+    if (!value) {
       this.unset("joinedBy");
     } else {
-      this.set("joinedBy", Value.fromBytes(value as Bytes));
+      this.set("joinedBy", Value.fromBytes(<Bytes>value));
     }
   }
 
-  get shots(): Array<string | null> {
+  get shots(): Array<string> {
     let value = this.get("shots");
-    return value.toStringArray();
+    return value!.toStringArray();
   }
 
-  set shots(value: Array<string | null>) {
+  set shots(value: Array<string>) {
     this.set("shots", Value.fromStringArray(value));
   }
 
   get startedBy(): Bytes {
     let value = this.get("startedBy");
-    return value.toBytes();
+    return value!.toBytes();
   }
 
   set startedBy(value: Bytes) {
@@ -79,7 +83,7 @@ export class BattleshipGame extends Entity {
 
   get status(): string {
     let value = this.get("status");
-    return value.toString();
+    return value!.toString();
   }
 
   set status(value: string) {
@@ -88,7 +92,7 @@ export class BattleshipGame extends Entity {
 
   get totalShots(): BigInt {
     let value = this.get("totalShots");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set totalShots(value: BigInt) {
@@ -97,7 +101,7 @@ export class BattleshipGame extends Entity {
 
   get winner(): Bytes | null {
     let value = this.get("winner");
-    if (value === null || value.kind == ValueKind.NULL) {
+    if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
       return value.toBytes();
@@ -105,10 +109,10 @@ export class BattleshipGame extends Entity {
   }
 
   set winner(value: Bytes | null) {
-    if (value === null) {
+    if (!value) {
       this.unset("winner");
     } else {
-      this.set("winner", Value.fromBytes(value as Bytes));
+      this.set("winner", Value.fromBytes(<Bytes>value));
     }
   }
 }
@@ -117,26 +121,32 @@ export class Shot extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+
+    this.set("x", Value.fromBigInt(BigInt.zero()));
+    this.set("y", Value.fromBigInt(BigInt.zero()));
+    this.set("game", Value.fromString(""));
+    this.set("turn", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Shot entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Shot entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Shot", id.toString(), this);
+    assert(id != null, "Cannot save Shot entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Shot must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Shot", id.toString(), this);
+    }
   }
 
   static load(id: string): Shot | null {
-    return store.get("Shot", id) as Shot | null;
+    return changetype<Shot | null>(store.get("Shot", id));
   }
 
   get id(): string {
     let value = this.get("id");
-    return value.toString();
+    return value!.toString();
   }
 
   set id(value: string) {
@@ -145,7 +155,7 @@ export class Shot extends Entity {
 
   get x(): BigInt {
     let value = this.get("x");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set x(value: BigInt) {
@@ -154,7 +164,7 @@ export class Shot extends Entity {
 
   get y(): BigInt {
     let value = this.get("y");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set y(value: BigInt) {
@@ -163,7 +173,7 @@ export class Shot extends Entity {
 
   get game(): string {
     let value = this.get("game");
-    return value.toString();
+    return value!.toString();
   }
 
   set game(value: string) {
@@ -172,7 +182,7 @@ export class Shot extends Entity {
 
   get hit(): boolean {
     let value = this.get("hit");
-    return value.toBoolean();
+    return value!.toBoolean();
   }
 
   set hit(value: boolean) {
@@ -181,7 +191,7 @@ export class Shot extends Entity {
 
   get turn(): BigInt {
     let value = this.get("turn");
-    return value.toBigInt();
+    return value!.toBigInt();
   }
 
   set turn(value: BigInt) {
