@@ -42,6 +42,23 @@ export class BattleshipGame extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get joinedBy(): Bytes | null {
+    let value = this.get("joinedBy");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set joinedBy(value: Bytes | null) {
+    if (value === null) {
+      this.unset("joinedBy");
+    } else {
+      this.set("joinedBy", Value.fromBytes(value as Bytes));
+    }
+  }
+
   get shots(): Array<string | null> {
     let value = this.get("shots");
     return value.toStringArray();
@@ -49,6 +66,15 @@ export class BattleshipGame extends Entity {
 
   set shots(value: Array<string | null>) {
     this.set("shots", Value.fromStringArray(value));
+  }
+
+  get startedBy(): Bytes {
+    let value = this.get("startedBy");
+    return value.toBytes();
+  }
+
+  set startedBy(value: Bytes) {
+    this.set("startedBy", Value.fromBytes(value));
   }
 
   get status(): string {
@@ -115,6 +141,24 @@ export class Shot extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get x(): BigInt {
+    let value = this.get("x");
+    return value.toBigInt();
+  }
+
+  set x(value: BigInt) {
+    this.set("x", Value.fromBigInt(value));
+  }
+
+  get y(): BigInt {
+    let value = this.get("y");
+    return value.toBigInt();
+  }
+
+  set y(value: BigInt) {
+    this.set("y", Value.fromBigInt(value));
   }
 
   get game(): string {

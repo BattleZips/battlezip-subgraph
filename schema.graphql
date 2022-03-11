@@ -10,7 +10,9 @@ enum GameStatus {
 
 type BattleshipGame @entity {
   id: ID!
+  joinedBy: Bytes
   shots: [Shot]! @derivedFrom(field: "game")
+  startedBy: Bytes!
   status: GameStatus!
   totalShots: BigInt!
   winner: Bytes
@@ -18,7 +20,9 @@ type BattleshipGame @entity {
 
 type Shot @entity {
   id: ID!
+  x: BigInt!
+  y: BigInt!
   game: BattleshipGame!
-  hit: Boolean!
+  hit: Boolean
   turn: BigInt!
 }

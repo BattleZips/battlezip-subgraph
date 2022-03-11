@@ -10,7 +10,6 @@ export function ensureBattleShipGame(id: string): BattleshipGame {
   game = new BattleshipGame(id);
   game.status = 'STARTED';
   game.totalShots = BIG_INT_ZERO;
-  game.save();
 
   return game;
 }

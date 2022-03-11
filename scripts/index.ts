@@ -2,6 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
 import handlebars from 'handlebars';
+import goerli from './deployments/goerli-deployment.json';
+import mumbai from './deployments/mumbai-deployment.json';
+import polygon from './deployments/polygon-deployment.json';
 import rinkeby from './deployments/rinkeby-deployment.json';
 import yargs from 'yargs';
 
@@ -14,14 +17,43 @@ interface BattleshipDeployment {
 }
 
 const deployment = (network: string): BattleshipDeployment => {
-  if (network === 'rinkeby') {
-    return {
-      networkName: rinkeby.networkName,
-      startBlock: rinkeby.startBlock,
+  switch (network) {
+    case 'rinkeby': {
+      return {
+        networkName: rinkeby.networkName,
+        startBlock: rinkeby.startBlock,
 
-      // Contracts
-      battleshipGame: rinkeby.battleshipGame,
-    };
+        // Contracts
+        battleshipGame: rinkeby.battleshipGame,
+      };
+    }
+    case 'goerli': {
+      return {
+        networkName: goerli.networkName,
+        startBlock: goerli.startBlock,
+
+        // Contracts
+        battleshipGame: goerli.battleshipGame,
+      };
+    }
+    case 'mumbai': {
+      return {
+        networkName: mumbai.networkName,
+        startBlock: mumbai.startBlock,
+
+        // Contracts
+        battleshipGame: mumbai.battleshipGame,
+      };
+    }
+    case 'polygon': {
+      return {
+        networkName: polygon.networkName,
+        startBlock: polygon.startBlock,
+
+        // Contracts
+        battleshipGame: polygon.battleshipGame,
+      };
+    }
   }
   throw new Error('Unsupported network');
 };

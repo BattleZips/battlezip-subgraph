@@ -10,24 +10,6 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class Collected extends ethereum.Event {
-  get params(): Collected__Params {
-    return new Collected__Params(this);
-  }
-}
-
-export class Collected__Params {
-  _event: Collected;
-
-  constructor(event: Collected) {
-    this._event = event;
-  }
-
-  get _amount(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-}
-
 export class Joined extends ethereum.Event {
   get params(): Joined__Params {
     return new Joined__Params(this);
@@ -44,6 +26,32 @@ export class Joined__Params {
   get _nonce(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
+
+  get _by(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class Report extends ethereum.Event {
+  get params(): Report__Params {
+    return new Report__Params(this);
+  }
+}
+
+export class Report__Params {
+  _event: Report;
+
+  constructor(event: Report) {
+    this._event = event;
+  }
+
+  get hit(): boolean {
+    return this._event.parameters[0].value.toBoolean();
+  }
+
+  get _game(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
 }
 
 export class Shot extends ethereum.Event {
@@ -59,16 +67,16 @@ export class Shot__Params {
     this._event = event;
   }
 
+  get _x(): i32 {
+    return this._event.parameters[0].value.toI32();
+  }
+
+  get _y(): i32 {
+    return this._event.parameters[1].value.toI32();
+  }
+
   get _game(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
-  }
-
-  get _turn(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
-  }
-
-  get _hit(): boolean {
-    return this._event.parameters[2].value.toBoolean();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -87,6 +95,10 @@ export class Started__Params {
 
   get _nonce(): BigInt {
     return this._event.parameters[0].value.toBigInt();
+  }
+
+  get _by(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -109,6 +121,10 @@ export class Won__Params {
 
   get _nonce(): BigInt {
     return this._event.parameters[1].value.toBigInt();
+  }
+
+  get _by(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -164,6 +180,21 @@ export class BattleshipGame__gamesResult {
 export class BattleshipGame extends ethereum.SmartContract {
   static bind(address: Address): BattleshipGame {
     return new BattleshipGame("BattleshipGame", address);
+  }
+
+  gameIndex(): BigInt {
+    let result = super.call("gameIndex", "gameIndex():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_gameIndex(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("gameIndex", "gameIndex():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   gameState(_game: BigInt): BattleshipGame__gameStateResult {
@@ -229,6 +260,29 @@ export class BattleshipGame extends ethereum.SmartContract {
     );
   }
 
+  isTrustedForwarder(forwarder: Address): boolean {
+    let result = super.call(
+      "isTrustedForwarder",
+      "isTrustedForwarder(address):(bool)",
+      [ethereum.Value.fromAddress(forwarder)]
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isTrustedForwarder(forwarder: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isTrustedForwarder",
+      "isTrustedForwarder(address):(bool)",
+      [ethereum.Value.fromAddress(forwarder)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   playing(param0: Address): BigInt {
     let result = super.call("playing", "playing(address):(uint256)", [
       ethereum.Value.fromAddress(param0)
@@ -266,15 +320,15 @@ export class ConstructorCall__Inputs {
     this._call = call;
   }
 
-  get _bv(): Address {
+  get _forwarder(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _sv(): Address {
+  get _bv(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _ticket(): Address {
+  get _sv(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 }
@@ -283,36 +337,6 @@ export class ConstructorCall__Outputs {
   _call: ConstructorCall;
 
   constructor(call: ConstructorCall) {
-    this._call = call;
-  }
-}
-
-export class CollectProceedsCall extends ethereum.Call {
-  get inputs(): CollectProceedsCall__Inputs {
-    return new CollectProceedsCall__Inputs(this);
-  }
-
-  get outputs(): CollectProceedsCall__Outputs {
-    return new CollectProceedsCall__Outputs(this);
-  }
-}
-
-export class CollectProceedsCall__Inputs {
-  _call: CollectProceedsCall;
-
-  constructor(call: CollectProceedsCall) {
-    this._call = call;
-  }
-
-  get _to(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class CollectProceedsCall__Outputs {
-  _call: CollectProceedsCall;
-
-  constructor(call: CollectProceedsCall) {
     this._call = call;
   }
 }
