@@ -64,13 +64,21 @@ export class BattleshipGame extends Entity {
     }
   }
 
-  get shots(): Array<string> {
+  get shots(): Array<string> | null {
     let value = this.get("shots");
-    return value!.toStringArray();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set shots(value: Array<string>) {
-    this.set("shots", Value.fromStringArray(value));
+  set shots(value: Array<string> | null) {
+    if (!value) {
+      this.unset("shots");
+    } else {
+      this.set("shots", Value.fromStringArray(<Array<string>>value));
+    }
   }
 
   get startedBy(): Bytes {

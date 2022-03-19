@@ -1,7 +1,7 @@
 import { Joined, Started, Shot, Won, Report } from '../../generated/BattleshipGame/BattleshipGame';
 import { BigInt } from '@graphprotocol/graph-ts';
 import { BIG_INT_ONE } from '../constants';
-import { ensureBattleShipGame } from '../entities/Currency';
+import { ensureBattleShipGame } from '../entities/Game';
 import { ensureShot } from '../entities/Shot';
 
 export function handleGameStarted(event: Started): void {
