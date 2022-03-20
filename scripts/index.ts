@@ -3,6 +3,7 @@ import fs from 'fs';
 import glob from 'glob';
 import handlebars from 'handlebars';
 import goerli from './deployments/goerli-deployment.json';
+import local from './deployments/local-deployment.json';
 import mumbai from './deployments/mumbai-deployment.json';
 import polygon from './deployments/polygon-deployment.json';
 import rinkeby from './deployments/rinkeby-deployment.json';
@@ -18,6 +19,15 @@ interface BattleshipDeployment {
 
 const deployment = (network: string): BattleshipDeployment => {
   switch (network) {
+    case 'local': {
+      return {
+        networkName: local.networkName,
+        startBlock: local.startBlock,
+
+        // Contracts
+        battleshipGame: local.battleshipGame,
+      };
+    }
     case 'rinkeby': {
       return {
         networkName: rinkeby.networkName,
