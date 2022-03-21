@@ -20,17 +20,18 @@
     "lint": "yarn prettier --write {src,scripts}/{*,**/*}.{ts,json,yaml}"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "0.23.2",
-    "@graphprotocol/graph-ts": "^0.26.0",
+    "@graphprotocol/graph-cli": "0.28.0",
+    "@graphprotocol/graph-ts": "0.26.0",
     "@types/glob": "^7.2.0",
-    "@types/yargs": "^17.0.8",
+    "@types/yargs": "^17.0.9",
+    "handlebars": "^4.7.7",
     "glob": "^7.2.0",
     "handlebars": "^4.7.7",
     "path": "^0.12.7",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2",
     "yargs": "^17.3.1"
   }
 }
