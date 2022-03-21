@@ -28,10 +28,10 @@ export function handleReport(event: Report): void {
 }
 
 export function handleShot(event: Shot): void {
-  log.warning('Game shot handled ID {}: ', [event.params._game.toString()]);
   let gameId = event.params._game.toString();
   let game = ensureBattleShipGame(gameId);
   let totalShots = (game.totalShots = game.totalShots.plus(BIG_INT_ONE));
+  log.warning('Shot ID {}: ', [event.params._game.toString().concat('-').concat(totalShots.toString())]);
   let shot = ensureShot(event.params._game.toString().concat('-').concat(totalShots.toString()));
   game.totalShots = totalShots;
   shot.game = gameId;
