@@ -182,6 +182,21 @@ export class BattleshipGame extends ethereum.SmartContract {
     return new BattleshipGame("BattleshipGame", address);
   }
 
+  HIT_MAX(): BigInt {
+    let result = super.call("HIT_MAX", "HIT_MAX():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_HIT_MAX(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("HIT_MAX", "HIT_MAX():(uint256)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   gameIndex(): BigInt {
     let result = super.call("gameIndex", "gameIndex():(uint256)", []);
 
@@ -300,6 +315,29 @@ export class BattleshipGame extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  trustedForwarder(): Address {
+    let result = super.call(
+      "trustedForwarder",
+      "trustedForwarder():(address)",
+      []
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_trustedForwarder(): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "trustedForwarder",
+      "trustedForwarder():(address)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 }
 

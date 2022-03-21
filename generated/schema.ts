@@ -27,7 +27,8 @@ export class BattleshipGame extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type BattleshipGame must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save BattleshipGame entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("BattleshipGame", id.toString(), this);
     }
@@ -63,13 +64,21 @@ export class BattleshipGame extends Entity {
     }
   }
 
-  get shots(): Array<string> {
+  get shots(): Array<string> | null {
     let value = this.get("shots");
-    return value!.toStringArray();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toStringArray();
+    }
   }
 
-  set shots(value: Array<string>) {
-    this.set("shots", Value.fromStringArray(value));
+  set shots(value: Array<string> | null) {
+    if (!value) {
+      this.unset("shots");
+    } else {
+      this.set("shots", Value.fromStringArray(<Array<string>>value));
+    }
   }
 
   get startedBy(): Bytes {
@@ -125,6 +134,7 @@ export class Shot extends Entity {
     this.set("x", Value.fromBigInt(BigInt.zero()));
     this.set("y", Value.fromBigInt(BigInt.zero()));
     this.set("game", Value.fromString(""));
+    this.set("hit", Value.fromBoolean(false));
     this.set("turn", Value.fromBigInt(BigInt.zero()));
   }
 
@@ -134,7 +144,8 @@ export class Shot extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Shot must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save Shot entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("Shot", id.toString(), this);
     }

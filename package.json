@@ -4,6 +4,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "script": "ts-node scripts",
+    "precodegen:local": "rimraf src/generated && yarn script template --network local",
     "precodegen:goerli": "rimraf src/generated && yarn script template --network goerli",
     "precodegen:mumbai": "rimraf src/generated && yarn script template --network mumbai",
     "precodegen:polygon": "rimraf src/generated && yarn script template --network polygon",
@@ -11,6 +12,7 @@
     "postcodegen": "yarn script flatten",
     "codegen": "graph codegen",
     "build": "graph build",
+    "deploy:local": "graph deploy ian-bright/zk-battleship-subgraph --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
     "deploy:goerli": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_goerli",
     "deploy:mumbai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_mumbai",
     "deploy:polygon": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ian-bright/battlezips_polygon",
